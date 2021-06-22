@@ -1,0 +1,4 @@
+admin/.dbdata/*
+main/.dbdata/*
+**/__pycache__/
+.vscode
