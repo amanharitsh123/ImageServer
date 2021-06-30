@@ -19,10 +19,9 @@ def upload_file():
         file1.save(path)
         data = request.form.to_dict(flat=False)
         userId = data['userid'][0]
-
         # Set userid and filename
         set_UserID(userId, unique_filename)
-        set_UserID(userId, unique_filename)
+        set_filename(userId, unique_filename)
         return path
     return '''
     <h1>Upload new File</h1>

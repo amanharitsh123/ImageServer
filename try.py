@@ -9,5 +9,10 @@ redis_db0 = redis.StrictRedis(host=redis_host, port=redis_port, password=redis_p
 
 keys = redis_db0.keys('*')
 
-for key in keys:
-    print(redis_db0.get(key))
+def get_all_pairs():
+    dic = {}
+    for key in redis_db0.keys('*'):
+        dic[key] = redis_db0.get(key)
+    return dic
+    
+print(get_all_pairs())
