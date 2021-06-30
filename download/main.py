@@ -1,37 +1,38 @@
 import os
-from flask import Flask, request
-from redisIO import *
+from flask import Flask, request, render_template, send_from_directory
 import uuid
+import jinja2
+from redisIO import *
 
-UPLOAD_FOLDER = './upload'
+UPLOAD_FOLDER = '../upload/upload'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+@app.route('/download', methods=['POST'])
+def downlaod():
+    result = request.form.to_dict(flat=False)
+    data = {'userid':result['userid'][0], 'image':result['image'][0]}
+    userid = result['userid'][0]
+    image = result['image'][0]
+    path = os.path.join(app.config['UPLOAD_FOLDER'])
+    print(path)
+    return send_from_directory(path, image)
+
 @app.route('/', methods=['GET', 'POST'])
 def downlaod_file():
-    if request.method == 'POST':
-        if 'file1' not in request.files:
-            return 'there is no file1 in form!'
-        file1 = request.files['file1']
-        unique_filename = str(uuid.uuid4())
-        path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
-        file1.save(path)
-        data = request.form.to_dict(flat=False)
-        userId = data['userid'][0]
+    image = request.args.get('image', default = 1, type = int)
+    if image == 1:
+        data = get_all_filenames()
+        loader = jinja2.FileSystemLoader('templates/download.html')
+        env = jinja2.Environment(loader=loader)
+        template = env.get_template('')
+        return template.render(items=data)
+    else:
+        # Check for connections and file download
+        pass
 
-        # Set userid and filename
-        set_UserID(userId, unique_filename)
-        set_UserID(userId, unique_filename)
-        return path
-    return '''
-    <h1>Upload new File</h1>
-    <form method="post" enctype="multipart/form-data">
-    UserId: <input type="text" name="userid"> <br>
-    File: <input type="file" name="file1">
-    <input type="submit">
-    </form>
-    '''
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
