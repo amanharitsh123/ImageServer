@@ -16,3 +16,16 @@ MATCH (j:Person {name:'b'})-[rel:IS_FRIENDS_WITH]-(m:Person {name: 'a'}) return 
 
 Username: neo4j
 Password: JjVUQfIw-vzOGKZK921Y7-0pcWBMBSCnzlr_itSNQ_c
+
+
+
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"friend1":"aman","friend2":"aryan"}' \
+  http://localhost:5001/checkFriend
+
+curl --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"friend1":"aman","friend2":"aryan"}' \
+  http://localhost:5001/makeFriend
+

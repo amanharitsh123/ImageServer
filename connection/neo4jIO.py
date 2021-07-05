@@ -59,14 +59,14 @@ class DB:
         self.ifNode(person1)
         self.ifNode(person2)
         if self.ifFriend(person1, person2):
-            print("Already friends")
+            return "Already friends"
             return
         res = self.conn.query(self.addFriend%(person1, person2), db=self.db)
-        print("Added friend Sucessfully")
+        return "Added friend Sucessfully"
 
 
-# Test Code
-obj = DB()
-obj.ifFriend("a", "c")
-obj.makeFriend("a", "c")
-obj.ifFriend("a", "c")
+# # Test Code
+# obj = DB()
+# obj.ifFriend("a", "c")
+# obj.makeFriend("a", "c")
+# obj.ifFriend("a", "c")
